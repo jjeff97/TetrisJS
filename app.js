@@ -71,22 +71,44 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	}
 
-//make the tet move down every second
-	timerId = setInterval(moveDown, 1000)
+	//make the tet move down every second
+	timerId = setInterval(moveDown, 500)
 
-//move down function
+	//move down function
 	function moveDown() {
 		undraw()
-		currentPostion += width 
+		currentPostion += width
 		draw()
+		freeze()
 	}
-// freeze function
+	// freeze function
 	function freeze() {
 		if (current.some(index => squares[currentPostion + index + width].classList.contains('taken'))) {
 			current.forEach(index => squares[currentPostion + index].classList.add('taken'))
 			//start a new Tet following
+			random = Math.floor(Math.random() * theTetrominoes.length)
+			current = theTetrominoes[random][currentRotation]
+			currentPostion = 4
+			draw()
+
 		}
 	}
+
+	function moveLeft() {
+		undraw()
+		const isAtLeftEdge = current.some(index => (currentPostion + index) % width === 0)
+		
+		if (!isALeft) currentPostion -= 1
+		
+		if (current.some(index => squares[currentPostion + index].classList.contains('taken')))
+			currentPostion +=1
+	}
+	draw()
+	
+	
+
+
+
 
 
 });
