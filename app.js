@@ -80,7 +80,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		currentPostion += width 
 		draw()
 	}
-
+// freeze function
+	function freeze() {
+		if (current.some(index => squares[currentPostion + index + width].classList.contains('taken'))) {
+			current.forEach(index => squares[currentPostion + index].classList.add('taken'))
+			//start a new Tet following
+		}
+	}
 
 
 });
