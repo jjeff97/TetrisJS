@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		iTetromino
 	];
 
-	let currentPostion = 4;
+	let currentPosition = 4;
 	let currentRotation = 0;
 
 	//randomly select a Tet and its 1st rotation
@@ -60,55 +60,91 @@ document.addEventListener("DOMContentLoaded", () => {
 	//draw the fidst rotation in the first tet
 	function draw() {
 		current.forEach((index) => {
-			squares[currentPostion + index].classList.add("tetromino");
+			squares[currentPosition + index].classList.add("tetromino");
 		});
 	}
 
 	//undraw the Tet
 	function undraw() {
 		current.forEach((index) => {
-			squares[currentPostion + index].classList.remove("tetromino");
+			squares[currentPosition + index].classList.remove("tetromino");
 		});
 	}
 
 	//make the tet move down every second
-	timerId = setInterval(moveDown, 500)
+	timerId = setInterval(moveDown, 500);
+
+	//assign functions to keyCodes
+	function control(e) {
+		if (e.keyCode === 37) {
+			moveLeft();
+		} else if (e.keyCode === 38) {
+			rotate();
+		} else if (e.keyCode === 39) {
+			moveRight();
+		} else if (e.keyCode === 40) {
+			moveDown();
+		}
+	}
+	document.addEventListener("keyup", control);
 
 	//move down function
 	function moveDown() {
-		undraw()
-		currentPostion += width
-		draw()
-		freeze()
+		undraw();
+		currentPosition += width;
+		draw();
+		freeze();
 	}
 	// freeze function
 	function freeze() {
-		if (current.some(index => squares[currentPostion + index + width].classList.contains('taken'))) {
-			current.forEach(index => squares[currentPostion + index].classList.add('taken'))
+		if (
+			current.some((index) =>
+				squares[currentPosition + index + width].classList.contains("taken")
+			)
+		) {
+			current.forEach((index) =>
+				squares[currentPosition + index].classList.add("taken")
+			);
 			//start a new Tet following
-			random = Math.floor(Math.random() * theTetrominoes.length)
-			current = theTetrominoes[random][currentRotation]
-			currentPostion = 4
-			draw()
-
+			random = Math.floor(Math.random() * theTetrominoes.length);
+			current = theTetrominoes[random][currentRotation];
+			currentPosition = 4;
+			draw();
 		}
 	}
 
 	function moveLeft() {
-		undraw()
-		const isAtLeftEdge = current.some(index => (currentPostion + index) % width === 0)
-		
-		if (!isALeft) currentPostion -= 1
-		
-		if (current.some(index => squares[currentPostion + index].classList.contains('taken')))
-			currentPostion +=1
+		undraw();
+		const isAtLeftEdge = current.some(
+			(index) => (currentPosition + index) % width === 0
+		);
+
+		if (!isAtLeftEdge) currentPosition -= 1;
+
+		if (
+			current.some((index) =>
+				squares[currentPosition + index].classList.contains("taken")
+			)
+		) {
+			currentPosition += 1;
+		}
+
+		draw();
 	}
-	draw()
-	
-	
 
+	//move tet right, unless there is an edge or blockage
 
+	function moveRight() {
 
+		undraw()
+		const isAtRightEdge = current.some(index => (currentPosition + index) % width === width - 1)
+		
+		if (!isAtRightEdge) currentPosition += 1
 
+		if (current.some(index => squares[currentPosition + index].classList.constains('taken'))) {
+			currentPosition -=1
+		}
+		
+	}
 
 });
