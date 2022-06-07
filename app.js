@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const ScoreDisplay = document.querySelector("#score");
 	const Startbn = document.querySelector("#start-button");
 	const width = 10;
+	let nextRandom = 0;
 
 	//Tetrominoes
 	const lTetromino = [
@@ -106,10 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
 				squares[currentPosition + index].classList.add("taken")
 			);
 			//start a new Tet following
-			random = Math.floor(Math.random() * theTetrominoes.length);
+			random = nextRandom;
+			nextRandom = Math.floor(Math.random() * theTetrominoes.length);
 			current = theTetrominoes[random][currentRotation];
 			currentPosition = 4;
 			draw();
+			displayShape();
 		}
 	}
 
@@ -157,6 +160,34 @@ document.addEventListener("DOMContentLoaded", () => {
 		current = theTetrominoes[random][currentRotation]
 		draw()
 }
+
+//show up-ext tet in mini grid
+	const displaySquares = document.querySelectorAll('.mini-grid div')
+	const displayWidth = 4
+	let displayIndex = 0
+	
+
+//tets without rotations
+	const upNextTetrominoes = [
+		[1, displayWidth + 1, displayWidth * 2 + 1, 2], //lTet
+		[0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], //zTet
+		[1, displayWidth, displayWidth + 1, displayWidth + 2], //tTet
+		[0, 1, displayWidth, displayWidth + 1], //oTet
+		[1, displayWidth+1, displayWidth*2+1, displayWidth*3+1] //iTet
+	]
+
+//display the shape in mini grid
+	function displayShape() {
+		displaySquares.forEach(square => {
+			square.classList.remove('tetromino')
+		})
+		upNextTetrominoes[nextRandom].forEach(index => {
+			displaySquares[displayIndex + index].classList.add('tetromino')
+		})
+	}
+	
+
+
 
 
 
