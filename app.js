@@ -1,12 +1,13 @@
-/** @format */
+/** @format */ /*jshint esversion: 6 */
 
 document.addEventListener("DOMContentLoaded", () => {
 	const grid = document.querySelector(".grid");
 	let squares = Array.from(document.querySelectorAll(".grid div"));
-	const ScoreDisplay = document.querySelector("#score");
-	const Startbn = document.querySelector("#start-button");
+	const scoreDisplay = document.querySelector("#score");
+	const startBtn = document.querySelector("#start-button");
 	const width = 10;
 	let nextRandom = 0;
+	let timerId;
 
 	//Tetrominoes
 	const lTetromino = [
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	//make the tet move down every second
-	timerId = setInterval(moveDown, 500);
+	//timerId = setInterval(moveDown, 500);
 
 	//assign functions to keyCodes
 	function control(e) {
@@ -99,11 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	// freeze function
 	function freeze() {
 		if (
-			current.some((index) =>
+			current.some((index =>
 				squares[currentPosition + index + width].classList.contains("taken")
-			)
+			))
 		) {
-			current.forEach((index) =>
+			current.forEach(index =>
 				squares[currentPosition + index].classList.add("taken")
 			);
 			//start a new Tet following
@@ -187,7 +188,24 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 	
 
-
+//add functionally to button
+	
+	startBtn.addEventListener('click', () => {
+		if (timerId) {
+			clearInterval(timerId)
+			timerId = null
+		} else {
+			draw()
+			timerId = setInterval(moveDown, 500)
+			nextRandom = Math.floor(Math.random() * theTetrominoes.length)
+			displayShape()
+		}
+	})
+	
+//add score
+	function addScore() {
+		
+	}
 
 
 
